@@ -126,7 +126,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         emailToUserid = new HashMap<>();
         // Instantiate the RequestQueue.
         final RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://slack.com/api/channels.info?token=xoxp-2477244817-237708742192-238675433826-95061baa8167ab557960274bcaa11e48&channel=C0565C5GT";
+        String url ="https://slack.com/api/users.list?token=xoxp-2477244817-237708742192-238675433826-95061baa8167ab557960274bcaa11e48";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -134,38 +134,14 @@ public final class OcrCaptureActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jObject = new JSONObject(response);
-                    JSONArray jsa = jObject.getJSONObject("channel").getJSONArray("members");
+                    JSONArray jsa = jObject.getJSONArray("members");
                     for (int i=0; i < jsa.length(); i++) {
-                        addEmailandUserID(jsa.getString(i), queue);
+                        JSONObject user = jsa.getJSONObject(i);
+                        emailToUserid.put(user.getJSONObject("profile").getString("email"), user.getString("id"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Error", "That didn't work!");
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
-
-    private void addEmailandUserID(final String userid, RequestQueue queue) {
-        String url = "https://slack.com/api/users.info?token=xoxp-2477244817-237708742192-238675433826-95061baa8167ab557960274bcaa11e48&user=" + userid;
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                String email = null;
-                try {
-                    email = new JSONObject(response).getJSONObject("user").getJSONObject("profile").getString("email");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                emailToUserid.put(email, userid);
             }
         }, new Response.ErrorListener() {
             @Override

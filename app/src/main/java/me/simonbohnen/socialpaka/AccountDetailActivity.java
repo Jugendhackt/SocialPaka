@@ -63,32 +63,14 @@ public class AccountDetailActivity extends AppCompatActivity {
 
         showInformation();
 
+        final RequestQueue queue = Volley.newRequestQueue(this);
         slackbutton = (Button) findViewById(R.id.slackbutton);
         slackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://10.172.14.70:9253/user?name=" + name.toLowerCase();
-                // Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            String email = new JSONObject(response).getString("email");
-                            String uri = "slack://user?team=T02E176Q1&id=" + OcrCaptureActivity.emailToUserid.get(email);
-                            final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                            startActivity(browserIntent);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error", "That didn't work!");
-                    }
-                });
-                // Add the request to the RequestQueue.
-                queue.add(stringRequest);
+                String uri = "slack://user?team=T02E176Q1&id=" + OcrCaptureActivity.emailToUserid.get(downloadInfo.getMail());
+                final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(browserIntent);
             }
         });
     }
