@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     tools:context="me.simonbohnen.socialpaka.AccountDetailActivity">
 
-    <Toolbar
+    <android.support.v7.widget.Toolbar
         android:id="@+id/account_detail_toolbar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:titleTextColor="#ffffff">
 
-    </Toolbar>
+    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:id="@+id/textView_name"
