@@ -1,12 +1,12 @@
 package me.simonbohnen.socialpaka;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
@@ -27,6 +27,10 @@ public class AccountDetailActivity extends AppCompatActivity {
     private TextView textView_mail;
     private TextView textView_tel;
     private TextView textView_bday;
+    private Button slackbutton;
+
+    private ProgressBar progressBar;
+    private TextView textView_download;
 
 
     public static void putName(String name, Intent intent) {
@@ -53,8 +57,10 @@ public class AccountDetailActivity extends AppCompatActivity {
         textView_tel = (TextView) findViewById(R.id.textView_phone);
         textView_bday = (TextView) findViewById(R.id.textView_birthday);
 
+        textView_download = (TextView) findViewById(R.id.account_detail_download);
+        progressBar = (ProgressBar) findViewById(R.id.account_detail_progressBar);
 
-        Button slackbutton = (Button) findViewById(R.id.slackbutton);
+         slackbutton = (Button) findViewById(R.id.slackbutton);
         slackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,15 +74,38 @@ public class AccountDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void showProgressbar() {
+        progressBar.setVisibility(View.VISIBLE);
+        textView_download.setVisibility(View.VISIBLE);
+        textView_name.setVisibility(View.INVISIBLE);
+        textView_mail.setVisibility(View.INVISIBLE);
+        textView_tel.setVisibility(View.INVISIBLE);
+        textView_bday.setVisibility(View.INVISIBLE);
+        slackbutton.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideProgressbar() {
+        progressBar.setVisibility(View.INVISIBLE);
+        textView_download.setVisibility(View.INVISIBLE);
+        textView_name.setVisibility(View.VISIBLE);
+        textView_mail.setVisibility(View.VISIBLE);
+        textView_tel.setVisibility(View.VISIBLE);
+        textView_bday.setVisibility(View.VISIBLE);
+        slackbutton.setVisibility(View.VISIBLE);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
 
         DownloadIntentService.startService(this, REQUEST_CODE_DOWNLOAD);
+
+        showProgressbar();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_DOWNLOAD) {
+            hideProgressbar();
             if (resultCode == DownloadIntentService.SUCCESS_CODE) {
                 String text = data.getStringExtra(DownloadIntentService.ID_EXTRA_DATA);
 

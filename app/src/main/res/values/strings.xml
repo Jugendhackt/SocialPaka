@@ -13,4 +13,5 @@
     <string name="ocr_failure">No text captured</string>
     <string name="ocr_error">"Error reading text: %1$s"</string>
     <string name="title_activity_account_detail_activiy">AccountDetailActiviy</string>
+    <string name="download">Lade Informationen...</string>
 </resources>
