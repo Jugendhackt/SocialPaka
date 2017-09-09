@@ -5,6 +5,7 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -26,9 +27,11 @@ import javax.net.ssl.HttpsURLConnection;
 public class DownloadIntentService extends IntentService {
     private static final String TAG = DownloadIntentService.class.getSimpleName();
 
-    private static final String SERVER_URL_SEARCH_USER = "http://37.201.105.205:9253/user?name=demo";
+    private static final String SERVER_URL_SEARCH_USER = "http://10.172.14.70:9253/user?name=";
     public static final String PENDING_RESULT_EXTRA = "PENDING_RESULT_EXTRA";
     public static final String ID_EXTRA_DATA = "ID_EXTRA_DATA";
+    public static final String ID_EXTRA_INPUT = "ID_EXTRA_DATA";
+    public static final String ID_EXTRA_DOWNLOADINFO = "ID_EXTRA_DOWNLOADINFO";
 
     public static final int ERROR_CODE = 0;
     public static final int SUCCESS_CODE = 1;
@@ -38,29 +41,33 @@ public class DownloadIntentService extends IntentService {
         super(TAG);
     }
 
-    public static void startService(Activity context, int requestCode) {
+    public static void startService(Activity context, int requestCode, String input) {
         Log.d(TAG, "startService");
         PendingIntent pendingResult = context.createPendingResult(
                 requestCode, new Intent(), 0);
 
         Intent intent = new Intent(context, DownloadIntentService.class);
         intent.putExtra(DownloadIntentService.PENDING_RESULT_EXTRA, pendingResult);
+        intent.putExtra(DownloadIntentService.ID_EXTRA_INPUT, input);
 
         context.startService(intent);
     }
 
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "Download");
-
         PendingIntent reply = intent.getParcelableExtra(PENDING_RESULT_EXTRA);
+        final String input = intent.getStringExtra(ID_EXTRA_INPUT);
+
 
         try {
-            InputStream inputStream = getStream(SERVER_URL_SEARCH_USER);
+            InputStream inputStream = getStream(SERVER_URL_SEARCH_USER + input);
             if (inputStream != null) {
                 String text = readStream(inputStream);
                 if (text != null) {
                     Intent data = new Intent();
-                    data.putExtra(ID_EXTRA_DATA, text);
+
+                    DownloadInfo downloadInfo = new DownloadInfo(input, text);
+                    data.putExtra(ID_EXTRA_DOWNLOADINFO, downloadInfo);
+
                     reply.send(this, SUCCESS_CODE, data);
                 }
             } else {

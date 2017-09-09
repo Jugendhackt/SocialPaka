@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,8 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AccountDetailActivity extends AppCompatActivity {
-    private static final String USER_NAME_ID = "USER_NAME_ID";
-    private static final int REQUEST_CODE_DOWNLOAD = 5;
+    public static final String ID_EXTRA_DOWNLOADINFO = "ID_EXTRA_DOWNLOADINFO";
+    public static final String USER_NAME_ID = "USER_NAME_ID";
+    public static final String JSON_DATA_ID = "JSON_DATA_ID";
 
     private Toolbar toolbar;
     private String name;
@@ -29,28 +31,22 @@ public class AccountDetailActivity extends AppCompatActivity {
     private TextView textView_tel;
     private TextView textView_bday;
     private Button slackbutton;
+    private ActionBar actionBar;
 
-    private ProgressBar progressBar;
-    private TextView textView_download;
-
-
-    public static void putName(String name, Intent intent) {
-        intent.putExtra(USER_NAME_ID, name);
-    }
+    private DownloadInfo downloadInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_detail_activity);
 
-        this.name = getIntent().getStringExtra(USER_NAME_ID);
+        downloadInfo = (DownloadInfo) getIntent().getSerializableExtra(ID_EXTRA_DOWNLOADINFO);
 
         toolbar = (Toolbar) findViewById(R.id.account_detail_toolbar);
         setSupportActionBar(toolbar);
-        final ActionBar t = getSupportActionBar();
-        if(t != null) {
-            t.setDisplayHomeAsUpEnabled(true);
-            t.setTitle(name);
+        actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         textView_name = (TextView) findViewById(R.id.textView_name);
@@ -58,10 +54,9 @@ public class AccountDetailActivity extends AppCompatActivity {
         textView_tel = (TextView) findViewById(R.id.textView_phone);
         textView_bday = (TextView) findViewById(R.id.textView_birthday);
 
-        textView_download = (TextView) findViewById(R.id.account_detail_download);
-        progressBar = (ProgressBar) findViewById(R.id.account_detail_progressBar);
+        showInformation();
 
-         slackbutton = (Button) findViewById(R.id.slackbutton);
+        slackbutton = (Button) findViewById(R.id.slackbutton);
         slackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,62 +68,17 @@ public class AccountDetailActivity extends AppCompatActivity {
                 startActivity(browserIntent);
             }
         });
+
+
     }
 
-    private void showProgressbar() {
-        progressBar.setVisibility(View.VISIBLE);
-        textView_download.setVisibility(View.VISIBLE);
-        textView_name.setVisibility(View.INVISIBLE);
-        textView_mail.setVisibility(View.INVISIBLE);
-        textView_tel.setVisibility(View.INVISIBLE);
-        textView_bday.setVisibility(View.INVISIBLE);
-        slackbutton.setVisibility(View.INVISIBLE);
-    }
 
-    private void hideProgressbar() {
-        progressBar.setVisibility(View.INVISIBLE);
-        textView_download.setVisibility(View.INVISIBLE);
-        textView_name.setVisibility(View.VISIBLE);
-        textView_mail.setVisibility(View.VISIBLE);
-        textView_tel.setVisibility(View.VISIBLE);
-        textView_bday.setVisibility(View.VISIBLE);
-        slackbutton.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        DownloadIntentService.startService(this, REQUEST_CODE_DOWNLOAD);
-
-        showProgressbar();
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_DOWNLOAD) {
-            if (resultCode == DownloadIntentService.SUCCESS_CODE) {
-                String text = data.getStringExtra(DownloadIntentService.ID_EXTRA_DATA);
-
-                try {
-                    JSONObject jsonObject = new JSONObject(text);
-
-                    String fullName = jsonObject.getString("fullName");
-                    String bday = jsonObject.getString("bday");
-                    String tel = jsonObject.getString("phone");
-                    String mail = jsonObject.getString("mail");
-
-                    textView_name.setText(fullName);
-                    textView_tel.setText(tel);
-                    textView_mail.setText(mail);
-                    textView_bday.setText(bday);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressbar();
-            } else if (resultCode == DownloadIntentService.ERROR_CODE) {
-                Intent errorIntent = new Intent(this, ErrorActivity.class);
-                startActivity(errorIntent);
-            }
-        }
+    protected void showInformation() {
+        name = downloadInfo.getInputName();
+        actionBar.setTitle(downloadInfo.getInputName());
+        textView_name.setText(downloadInfo.getName());
+        textView_bday.setText(downloadInfo.getBday());
+        textView_tel.setText(downloadInfo.getPhone());
+        textView_mail.setText(downloadInfo.getMail());
     }
 }
