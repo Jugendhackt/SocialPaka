@@ -15,6 +15,8 @@
  */
 package me.simonbohnen.socialpaka;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -31,9 +33,12 @@ import com.google.android.gms.vision.text.TextBlock;
 public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
+    private Context context;
 
-    OcrDetectorProcessor(GraphicOverlay<OcrGraphic> ocrGraphicOverlay) {
+    OcrDetectorProcessor(GraphicOverlay<OcrGraphic> ocrGraphicOverlay,
+                         Context context) {
         mGraphicOverlay = ocrGraphicOverlay;
+        this.context = context;
     }
 
     /**
@@ -53,8 +58,13 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                 String wort = item.getValue();
                 if(Character.isUpperCase(wort.charAt(0)) && wort.matches("[A-Z][a-z]+")) {
                     Log.d("OCR", "Name detected: " + wort);
-                    OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
-                    mGraphicOverlay.add(graphic);
+//                    OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
+//                    mGraphicOverlay.add(graphic);
+
+                    // Show AccountDetailActivity
+                    Intent startActivity = new Intent(context, AccountDetailActiviy.class);
+                    AccountDetailActiviy.putName(wort, startActivity);
+                    context.startActivity(startActivity);
                 } else {
                     Log.d("OcrDetectorProcessor", "Text detected! " + item.getValue());
                 }
