@@ -2,12 +2,15 @@ package me.simonbohnen.socialpaka;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.samples.vision.ocrreader.R;
 
@@ -50,6 +53,19 @@ public class AccountDetailActivity extends AppCompatActivity {
         textView_tel = (TextView) findViewById(R.id.textView_phone);
         textView_bday = (TextView) findViewById(R.id.textView_birthday);
 
+
+        Button slackbutton = (Button) findViewById(R.id.slackbutton);
+        slackbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uri = "slack://user?team=T02E176Q1&id=";
+                if(name.equals("Simon")) {
+                    uri += "U6ZLUMU5N";
+                }
+                final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(browserIntent);
+            }
+        });
     }
 
     @Override

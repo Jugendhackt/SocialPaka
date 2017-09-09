@@ -33,7 +33,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -74,7 +73,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
-    private GestureDetector gestureDetector;
 
     // A TextToSpeech engine for speaking a String value.
     private TextToSpeech tts;
@@ -160,10 +158,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         boolean b = scaleGestureDetector.onTouchEvent(e);
-
-        boolean c = gestureDetector.onTouchEvent(e);
-
-        return b || c || super.onTouchEvent(e);
+        return b || super.onTouchEvent(e);
     }
 
     /**
