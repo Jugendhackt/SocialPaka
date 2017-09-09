@@ -30,6 +30,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -126,22 +127,43 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         emailToUserid = new HashMap<>();
         // Instantiate the RequestQueue.
         final RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://slack.com/api/users.list?token=xoxp-2477244817-237708742192-238675433826-95061baa8167ab557960274bcaa11e48";
+        String url ="https://slack.com/api/users.list?token=xoxp-2477244817-237708742192-239610666038-c6551ce4a404607d4a49d8e9c886dafe";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jObject = new JSONObject(response);
-                    JSONArray jsa = jObject.getJSONArray("members");
-                    for (int i=0; i < jsa.length(); i++) {
-                        JSONObject user = jsa.getJSONObject(i);
-                        emailToUserid.put(user.getJSONObject("profile").getString("email"), user.getString("id"));
+            public void onResponse(final String response) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject jObject = null;
+                        try {
+                            jObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JSONArray jsa = jObject.optJSONArray("members");
+                            Log.d("Test", Integer.toString(jsa.length()));
+                            int count = 0;
+                            for (int i=0; i < jsa.length(); i++) {
+                                JSONObject user = jsa.optJSONObject(i);
+                                JSONObject profile = user.optJSONObject("profile");
+                                if (profile != null) {
+                                    String email = profile.optString("email");
+                                    if(email == null) {
+                                        Log.d("No email", Integer.toString(i));
+                                    } else {
+                                        emailToUserid.put(email, user.optString("id"));
+                                    }
+                                } else {
+                                    Log.d("profileNull", Integer.toString(i));
+                                }
+                                count++;
+                                Log.d("test", Integer.toString(count));
+                                Log.d("Test", Integer.toString(i));
+                            }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                }).start();
             }
         }, new Response.ErrorListener() {
             @Override

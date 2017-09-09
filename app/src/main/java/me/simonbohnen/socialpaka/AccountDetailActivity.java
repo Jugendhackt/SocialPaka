@@ -63,7 +63,8 @@ public class AccountDetailActivity extends AppCompatActivity {
 
         showInformation();
 
-        final RequestQueue queue = Volley.newRequestQueue(this);
+        Log.d("Test", Integer.toString(OcrCaptureActivity.emailToUserid.size()));
+
         slackbutton = (Button) findViewById(R.id.slackbutton);
         slackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
