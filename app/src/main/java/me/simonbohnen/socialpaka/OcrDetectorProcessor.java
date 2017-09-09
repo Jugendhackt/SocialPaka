@@ -50,10 +50,15 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
         for (int i = 0; i < items.size(); ++i) {
             TextBlock item = items.valueAt(i);
             if (item != null && item.getValue() != null) {
-                Log.d("OcrDetectorProcessor", "Text detected! " + item.getValue());
+                String wort = item.getValue();
+                if(Character.isUpperCase(wort.charAt(0)) && wort.matches("[A-Z][a-z]+")) {
+                    Log.d("OCR", "Name detected: " + wort);
+                    OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
+                    mGraphicOverlay.add(graphic);
+                } else {
+                    Log.d("OcrDetectorProcessor", "Text detected! " + item.getValue());
+                }
             }
-            OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
-            mGraphicOverlay.add(graphic);
         }
     }
 
