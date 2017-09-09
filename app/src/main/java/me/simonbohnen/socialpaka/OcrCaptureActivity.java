@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,12 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import me.simonbohnen.socialpaka.ui.camera.*;
@@ -45,7 +52,12 @@ import me.simonbohnen.socialpaka.ui.camera.*;
 import com.google.android.gms.samples.vision.ocrreader.R;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -66,6 +78,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
     public static final String TextBlockObject = "String";
+
+    public static HashMap<String, String> emailToUserid;
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -107,20 +121,58 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 Snackbar.LENGTH_LONG)
                 .show();
 
-        // Set up the Text To Speech engine.
-        TextToSpeech.OnInitListener listener =
-                new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(final int status) {
-                        if (status == TextToSpeech.SUCCESS) {
-                            Log.d("OnInitListener", "Text to speech engine started successfully.");
-                            tts.setLanguage(Locale.US);
-                        } else {
-                            Log.d("OnInitListener", "Error starting the text to speech engine.");
-                        }
+        emailToUserid = new HashMap<>();
+        // Instantiate the RequestQueue.
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="https://slack.com/api/channels.info?token=xoxp-2477244817-237708742192-238675433826-95061baa8167ab557960274bcaa11e48&channel=C0565C5GT";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jObject = new JSONObject(response);
+                    JSONArray jsa = jObject.getJSONObject("channel").getJSONArray("members");
+                    for (int i=0; i < jsa.length(); i++) {
+                        addEmailandUserID(jsa.getString(i), queue);
                     }
-                };
-        tts = new TextToSpeech(this.getApplicationContext(), listener);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Error", "That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    private void addEmailandUserID(final String userid, RequestQueue queue) {
+        String url = "https://slack.com/api/users.info?token=xoxp-2477244817-237708742192-238675433826-95061baa8167ab557960274bcaa11e48&user=" + userid;
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                String email = null;
+                try {
+                    email = new JSONObject(response).getJSONObject("user").getJSONObject("profile").getString("email");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                emailToUserid.put(email, userid);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Error", "That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     /**

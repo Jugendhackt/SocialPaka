@@ -8,11 +8,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ProgressBar;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.Button;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.samples.vision.ocrreader.R;
 
 import org.json.JSONException;
@@ -65,34 +72,30 @@ public class AccountDetailActivity extends AppCompatActivity {
         slackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uri = "slack://user?team=T02E176Q1&id=";
-                if(name.equals("Simon")) {
-                    uri += "U6ZLUMU5N";
-                }
-                final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(browserIntent);
+                String url = "http://10.172.14.70:9253/user?name=" + name.toLowerCase();
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            String email = new JSONObject(response).getString("email");
+                            String uri = "slack://user?team=T02E176Q1&id=" + OcrCaptureActivity.emailToUserid.get(email);
+                            final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                            startActivity(browserIntent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error", "That didn't work!");
+                    }
+                });
+                // Add the request to the RequestQueue.
+                queue.add(stringRequest);
             }
         });
-    }
-
-    private void showProgressbar() {
-        progressBar.setVisibility(View.VISIBLE);
-        textView_download.setVisibility(View.VISIBLE);
-        textView_name.setVisibility(View.INVISIBLE);
-        textView_mail.setVisibility(View.INVISIBLE);
-        textView_tel.setVisibility(View.INVISIBLE);
-        textView_bday.setVisibility(View.INVISIBLE);
-        slackbutton.setVisibility(View.INVISIBLE);
-    }
-
-    private void hideProgressbar() {
-        progressBar.setVisibility(View.INVISIBLE);
-        textView_download.setVisibility(View.INVISIBLE);
-        textView_name.setVisibility(View.VISIBLE);
-        textView_mail.setVisibility(View.VISIBLE);
-        textView_tel.setVisibility(View.VISIBLE);
-        textView_bday.setVisibility(View.VISIBLE);
-        slackbutton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -100,8 +103,6 @@ public class AccountDetailActivity extends AppCompatActivity {
         super.onStart();
 
         DownloadIntentService.startService(this, REQUEST_CODE_DOWNLOAD);
-
-        showProgressbar();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -124,10 +125,8 @@ public class AccountDetailActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                hideProgressbar();
             } else if (resultCode == DownloadIntentService.ERROR_CODE) {
-                Intent errorIntent = new Intent(this, ErrorActivity.class);
-                startActivity(errorIntent);
+                Toast.makeText(this, "Keine Verbindung möglich.", Toast.LENGTH_SHORT).show();
             }
         }
     }
