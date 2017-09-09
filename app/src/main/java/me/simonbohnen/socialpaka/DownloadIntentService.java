@@ -27,7 +27,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class DownloadIntentService extends IntentService {
     private static final String TAG = DownloadIntentService.class.getSimpleName();
 
-    private static final String SERVER_URL_SEARCH_USER = "http://10.172.14.70:9253/user?name=";
+    private static final String SERVER_URL_SEARCH_USER = "http://10.172.3.201:9253/user?name=";
     public static final String PENDING_RESULT_EXTRA = "PENDING_RESULT_EXTRA";
     public static final String ID_EXTRA_DATA = "ID_EXTRA_DATA";
     public static final String ID_EXTRA_INPUT = "ID_EXTRA_DATA";
@@ -56,7 +56,6 @@ public class DownloadIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         PendingIntent reply = intent.getParcelableExtra(PENDING_RESULT_EXTRA);
         final String input = intent.getStringExtra(ID_EXTRA_INPUT);
-
 
         try {
             InputStream inputStream = getStream(SERVER_URL_SEARCH_USER + input);
