@@ -6,6 +6,8 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -42,6 +44,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.simonbohnen.socialpaka.OcrCaptureActivity" />
         </activity>
+
+        <service
+            android:name="me.simonbohnen.socialpaka.DownloadIntentService"
+            android:exported="false" />
     </application>
 
 </manifest>
