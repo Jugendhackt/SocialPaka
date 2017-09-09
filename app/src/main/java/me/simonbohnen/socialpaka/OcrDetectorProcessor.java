@@ -55,9 +55,8 @@ class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
             TextBlock item = items.valueAt(i);
             if (item != null && item.getValue() != null) {
                 String wort = item.getValue();
-                if(Character.isUpperCase(wort.charAt(0)) && wort.matches("[A-Z][a-z]+")) {
+                if(wort.length() > 1 && Character.isUpperCase(wort.charAt(0)) && wort.matches("[A-Za-z-]+") && wort.charAt(wort.length() - 1) != '-') {
                     Log.d("OCR", "Name detected: " + wort);
-
                     // Show AccountDetailActivity
                     Intent startActivity = new Intent(context, AccountDetailActivity.class);
                     AccountDetailActivity.putName(wort, startActivity);
