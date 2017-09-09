@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:fullBackupContent="false"
@@ -48,6 +47,8 @@
         <service
             android:name="me.simonbohnen.socialpaka.DownloadIntentService"
             android:exported="false" />
+
+        <activity android:name="me.simonbohnen.socialpaka.ErrorActivity"></activity>
     </application>
 
 </manifest>

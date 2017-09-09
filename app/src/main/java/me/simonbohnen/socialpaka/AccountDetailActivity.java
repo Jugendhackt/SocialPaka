@@ -1,6 +1,7 @@
 package me.simonbohnen.socialpaka;
 
 import android.content.Intent;
+import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -105,7 +106,6 @@ public class AccountDetailActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_DOWNLOAD) {
-            hideProgressbar();
             if (resultCode == DownloadIntentService.SUCCESS_CODE) {
                 String text = data.getStringExtra(DownloadIntentService.ID_EXTRA_DATA);
 
@@ -124,8 +124,10 @@ public class AccountDetailActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                hideProgressbar();
             } else if (resultCode == DownloadIntentService.ERROR_CODE) {
-                Toast.makeText(this, "Keine Verbindung möglich.", Toast.LENGTH_SHORT).show();
+                Intent errorIntent = new Intent(this, ErrorActivity.class);
+                startActivity(errorIntent);
             }
         }
     }
