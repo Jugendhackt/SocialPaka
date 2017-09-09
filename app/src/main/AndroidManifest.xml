@@ -14,7 +14,7 @@
         android:fullBackupContent="false"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="OcrReaderApp"
+        android:label="SocialPaka"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -29,7 +29,7 @@
 
         <activity
             android:name="me.simonbohnen.socialpaka.OcrCaptureActivity"
-            android:label="Read Text">
+            android:label="SocialPaka">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
