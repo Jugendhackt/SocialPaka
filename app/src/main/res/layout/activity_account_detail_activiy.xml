@@ -6,4 +6,10 @@
     android:layout_height="match_parent"
     tools:context="me.simonbohnen.socialpaka.AccountDetailActiviy">
 
+    <Toolbar
+        android:id="@+id/account_detail_toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+    </Toolbar>
 </android.support.constraint.ConstraintLayout>
