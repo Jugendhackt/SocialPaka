@@ -16,6 +16,7 @@
 package me.simonbohnen.socialpaka;
 
 import android.Manifest;
+import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -67,6 +68,7 @@ import java.util.Locale;
  */
 public final class OcrCaptureActivity extends AppCompatActivity {
     private static final String TAG = "OcrCaptureActivity";
+    public static final int DOWNLOAD_REQUEST_CODE = 5;
 
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -173,6 +175,23 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == DOWNLOAD_REQUEST_CODE) {
+            if (resultCode == DownloadIntentService.SUCCESS_CODE) {
+                Intent intent = new Intent(this, AccountDetailActivity.class);
+
+                DownloadInfo downloadInfo = (DownloadInfo) data.getSerializableExtra(DownloadIntentService.ID_EXTRA_DOWNLOADINFO);
+                intent.putExtra(AccountDetailActivity.ID_EXTRA_DOWNLOADINFO, downloadInfo);
+
+
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Fehlgeschlagen", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     /**
