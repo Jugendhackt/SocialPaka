@@ -7,7 +7,7 @@ import android.widget.Toolbar;
 
 import com.google.android.gms.samples.vision.ocrreader.R;
 
-public class AccountDetailActiviy extends Activity {
+public class AccountDetailActivity extends Activity {
     private static final String USER_NAME_ID = "USER_NAME_ID";
     private Toolbar toolbar;
     private String name;

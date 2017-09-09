@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
 
-import me.simonbohnen.socialpaka.ui.*;
 import me.simonbohnen.socialpaka.ui.camera.GraphicOverlay;
 
 import com.google.android.gms.vision.Detector;
@@ -62,8 +61,8 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 //                    mGraphicOverlay.add(graphic);
 
                     // Show AccountDetailActivity
-                    Intent startActivity = new Intent(context, AccountDetailActiviy.class);
-                    AccountDetailActiviy.putName(wort, startActivity);
+                    Intent startActivity = new Intent(context, AccountDetailActivity.class);
+                    AccountDetailActivity.putName(wort, startActivity);
                     context.startActivity(startActivity);
                 } else {
                     Log.d("OcrDetectorProcessor", "Text detected! " + item.getValue());
