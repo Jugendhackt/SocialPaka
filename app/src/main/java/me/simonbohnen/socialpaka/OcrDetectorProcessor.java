@@ -29,7 +29,7 @@ import com.google.android.gms.vision.text.TextBlock;
  * A very simple Processor which gets detected TextBlocks and adds them to the overlay
  * as OcrGraphics.
  */
-public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
+class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
     private Context context;
@@ -57,8 +57,6 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                 String wort = item.getValue();
                 if(Character.isUpperCase(wort.charAt(0)) && wort.matches("[A-Z][a-z]+")) {
                     Log.d("OCR", "Name detected: " + wort);
-//                    OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
-//                    mGraphicOverlay.add(graphic);
 
                     // Show AccountDetailActivity
                     Intent startActivity = new Intent(context, AccountDetailActivity.class);
