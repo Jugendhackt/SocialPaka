@@ -58,4 +58,16 @@ public class DownloadInfo implements Serializable{
     public String getPhone() {
         return phone;
     }
+
+    public String getSkills() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String skill : skills) {
+            if (skill.equals(skills[skills.length - 1])) {
+                stringBuilder.append(skill);
+            } else {
+                stringBuilder.append(skill + ",");
+            }
+        }
+        return stringBuilder.toString();
+    }
 }

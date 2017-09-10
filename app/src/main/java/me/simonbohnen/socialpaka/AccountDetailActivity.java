@@ -37,6 +37,7 @@ public class AccountDetailActivity extends AppCompatActivity {
     private TextView textView_mail;
     private TextView textView_tel;
     private TextView textView_bday;
+    private TextView textView_skills;
     private Button slackbutton;
     private ActionBar actionBar;
 
@@ -60,6 +61,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         textView_mail = (TextView) findViewById(R.id.textView_e_mail);
         textView_tel = (TextView) findViewById(R.id.textView_phone);
         textView_bday = (TextView) findViewById(R.id.textView_birthday);
+        textView_skills = (TextView) findViewById(R.id.textView_skills);
 
         showInformation();
 
@@ -84,6 +86,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         textView_bday.setText(downloadInfo.getBday());
         textView_tel.setText(downloadInfo.getPhone());
         textView_mail.setText(downloadInfo.getMail());
+        textView_skills.setText(String.format(getString(R.string.skills_template), downloadInfo.getSkills()));
     }
 
     @Override

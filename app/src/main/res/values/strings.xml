@@ -14,4 +14,5 @@
     <string name="ocr_error">"Error reading text: %1$s"</string>
     <string name="title_activity_account_detail_activiy">AccountDetailActiviy</string>
     <string name="download">Lade Informationen...</string>
+    <string name="skills_template">Ich kann: %s</string>
 </resources>
