@@ -1,5 +1,6 @@
 package me.simonbohnen.socialpaka;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +16,7 @@ public class DownloadInfo implements Serializable{
     private String bday;
     private String mail;
     private String phone;
+    private String[] skills;
 
     public DownloadInfo(String name, String json) {
         try {
@@ -26,6 +28,12 @@ public class DownloadInfo implements Serializable{
             this.bday = jsonObject.getString("bday");
             this.mail = jsonObject.getString("email");
             this.phone = jsonObject.getString("phone");
+            JSONArray jsonArray = jsonObject.getJSONArray("skills");
+            skills = new String[jsonArray.length()];
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                skills[i] = (String) jsonArray.get(i);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

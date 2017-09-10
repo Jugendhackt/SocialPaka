@@ -85,4 +85,12 @@ public class AccountDetailActivity extends AppCompatActivity {
         textView_tel.setText(downloadInfo.getPhone());
         textView_mail.setText(downloadInfo.getMail());
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, OcrCaptureActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
 }
