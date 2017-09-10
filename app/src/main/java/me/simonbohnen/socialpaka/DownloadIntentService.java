@@ -69,6 +69,12 @@ public class DownloadIntentService extends IntentService {
 
                     reply.send(this, SUCCESS_CODE, data);
                 }
+            } else if (OcrCaptureActivity.nameToUserID.containsKey(input)) {
+                Intent data = new Intent();
+                DownloadInfo downloadInfo = new DownloadInfo(input, "");
+                data.putExtra(ID_EXTRA_DOWNLOADINFO, downloadInfo);
+
+                reply.send(this, SUCCESS_CODE, data);
             } else {
                 reply.send(ERROR_CODE);
             }

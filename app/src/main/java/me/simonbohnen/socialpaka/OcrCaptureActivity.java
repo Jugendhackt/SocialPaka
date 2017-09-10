@@ -78,6 +78,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public static final String UseFlash = "UseFlash";
 
     public static HashMap<String, String> emailToUserid;
+    public static HashMap<String, String> nameToUserID;
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -87,6 +88,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     private ScaleGestureDetector scaleGestureDetector;
 
     public static String jhUserIDs;
+    private static JSONObject userlist;
 
     /**
      * Initializes the UI and creates the detector pipeline.
@@ -119,9 +121,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 .show();
 
         emailToUserid = new HashMap<>();
+        nameToUserID = new HashMap<>();
         // Instantiate the RequestQueue.
         final RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://slack.com/api/users.list?token=xoxp-2477244817-237708742192-238136678432-044c8c373653f6ea70ec3a1071af0bae";
+        String url ="https://slack.com/api/users.list?token=xoxp-2477244817-237708742192-238717972115-3a557f9046d2f08c52f08591b858d78f";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -134,6 +137,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if(jObject != null) {
+                    userlist = jObject;
                     JSONArray jsa = jObject.optJSONArray("members");
                     for (int i = 0; i < jsa.length(); i++) {
                         JSONObject user = jsa.optJSONObject(i);
@@ -156,7 +160,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
-        String url2 ="https://slack.com/api/channels.info?token=xoxp-2477244817-237708742192-238136678432-044c8c373653f6ea70ec3a1071af0bae&channel=C0565C5GT";
+        String url2 ="https://slack.com/api/channels.info?token=xoxp-2477244817-237708742192-238717972115-3a557f9046d2f08c52f08591b858d78f&channel=C0565C5GT";
         // Request a string response from the provided URL.
         StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>() {
             @Override
@@ -170,6 +174,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 if(jObject != null) {
                     JSONArray jsa = jObject.optJSONObject("channel").optJSONArray("members");
                     jhUserIDs = jsa.toString();
+                    surNameToUserID();
                 }
             }
         }, new Response.ErrorListener() {
@@ -182,6 +187,22 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         queue.add(stringRequest2);
     }
 
+    private void surNameToUserID() {
+        if(userlist != null) {
+            JSONArray jsa = userlist.optJSONArray("members");
+            for (int i = 0; i < jsa.length(); i++) {
+                JSONObject user = jsa.optJSONObject(i);
+                String id = user.optString("id");
+                if(jhUserIDs.contains(id)) {
+                    String name = user.optString("real_name").split(" ")[0];
+                    if (name != null) {
+                        nameToUserID.put(name, id);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == DOWNLOAD_REQUEST_CODE) {
@@ -190,7 +211,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
                 DownloadInfo downloadInfo = (DownloadInfo) data.getSerializableExtra(DownloadIntentService.ID_EXTRA_DOWNLOADINFO);
                 intent.putExtra(AccountDetailActivity.ID_EXTRA_DOWNLOADINFO, downloadInfo);
-
 
                 startActivity(intent);
             } else {
