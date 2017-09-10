@@ -73,6 +73,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
+    private static final String token =  "xoxp-2477244817-237708742192-238717972115-3a557f9046d2f08c52f08591b858d78f";
+
     // Constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
@@ -124,7 +126,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         nameToUserID = new HashMap<>();
         // Instantiate the RequestQueue.
         final RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://slack.com/api/users.list?token=xoxp-2477244817-237708742192-238717972115-3a557f9046d2f08c52f08591b858d78f";
+        String url ="https://slack.com/api/users.list?token=" + token;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -149,6 +151,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    surNameToUserID();
                 }
             }
         }, new Response.ErrorListener() {
@@ -157,10 +160,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 Log.d("Error", "That didn't work!");
             }
         });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
 
-        String url2 ="https://slack.com/api/channels.info?token=xoxp-2477244817-237708742192-238717972115-3a557f9046d2f08c52f08591b858d78f&channel=C0565C5GT";
+        String url2 ="https://slack.com/api/channels.info?token=" + token + "&channel=C0565C5GT";
         // Request a string response from the provided URL.
         StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>() {
             @Override
@@ -174,7 +175,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 if(jObject != null) {
                     JSONArray jsa = jObject.optJSONObject("channel").optJSONArray("members");
                     jhUserIDs = jsa.toString();
-                    surNameToUserID();
                 }
             }
         }, new Response.ErrorListener() {
@@ -185,6 +185,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequest2);
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     private void surNameToUserID() {

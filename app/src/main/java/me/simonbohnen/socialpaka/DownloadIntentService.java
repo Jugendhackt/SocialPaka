@@ -70,6 +70,7 @@ public class DownloadIntentService extends IntentService {
                     reply.send(this, SUCCESS_CODE, data);
                 }
             } else if (OcrCaptureActivity.nameToUserID.containsKey(input)) {
+                AccountDetailActivity.vorname = input;
                 Intent data = new Intent();
                 DownloadInfo downloadInfo = new DownloadInfo(input, "");
                 data.putExtra(ID_EXTRA_DOWNLOADINFO, downloadInfo);

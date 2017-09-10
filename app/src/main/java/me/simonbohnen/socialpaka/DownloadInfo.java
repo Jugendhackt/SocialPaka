@@ -16,7 +16,7 @@ public class DownloadInfo implements Serializable{
     private String bday;
     private String mail;
     private String phone;
-    private String[] skills;
+    String[] skills;
 
     public DownloadInfo(String name, String json) {
         try {

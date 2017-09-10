@@ -1,35 +1,24 @@
 package me.simonbohnen.socialpaka;
 
 import android.content.Intent;
-import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.ProgressBar;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.view.View;
 import android.widget.Button;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.samples.vision.ocrreader.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class AccountDetailActivity extends AppCompatActivity {
     public static final String ID_EXTRA_DOWNLOADINFO = "ID_EXTRA_DOWNLOADINFO";
     public static final String USER_NAME_ID = "USER_NAME_ID";
     public static final String JSON_DATA_ID = "JSON_DATA_ID";
+
+    public static String vorname = "";
 
     private Toolbar toolbar;
     private String name;
@@ -71,7 +60,13 @@ public class AccountDetailActivity extends AppCompatActivity {
         slackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uri = "slack://user?team=T02E176Q1&id=" + OcrCaptureActivity.emailToUserid.get(downloadInfo.getMail());
+                String uri = "slack://user?team=T02E176Q1&id=";
+                String mail = downloadInfo.getMail();
+                if(mail != null) {
+                    uri += OcrCaptureActivity.emailToUserid.get(downloadInfo.getMail());
+                } else if (OcrCaptureActivity.nameToUserID.containsKey(vorname)) {
+                    uri += OcrCaptureActivity.nameToUserID.get(vorname);
+                }
                 final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 startActivity(browserIntent);
             }
@@ -86,7 +81,9 @@ public class AccountDetailActivity extends AppCompatActivity {
         textView_bday.setText(downloadInfo.getBday());
         textView_tel.setText(downloadInfo.getPhone());
         textView_mail.setText(downloadInfo.getMail());
-        textView_skills.setText(String.format(getString(R.string.skills_template), downloadInfo.getSkills()));
+        if(downloadInfo.skills != null) {
+            textView_skills.setText(String.format(getString(R.string.skills_template), downloadInfo.getSkills()));
+        }
     }
 
     @Override
