@@ -48,6 +48,10 @@
             android:name="me.simonbohnen.socialpaka.DownloadIntentService"
             android:exported="false" />
 
+        <service
+            android:name="me.simonbohnen.socialpaka.SearchIntentService"
+            android:exported="false" />
+
         <activity android:name="me.simonbohnen.socialpaka.ErrorActivity" />
         <activity
             android:name="me.simonbohnen.socialpaka.SearchActivity"

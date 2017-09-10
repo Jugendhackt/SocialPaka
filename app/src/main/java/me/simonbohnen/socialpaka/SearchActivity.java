@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SearchViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
@@ -47,6 +50,8 @@ public class SearchActivity extends AppCompatActivity {
         button_search = (Button) findViewById(R.id.button_search);
         listview = (ListView) findViewById(R.id.search_listview);
 
+
+
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,18 +62,20 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("onActivityResult", "Result");
         if (requestCode == REQUEST_SEARCH) {
             if (resultCode == SearchIntentService.SUCCESS_CODE) {
                 String jsonData = data.getStringExtra(SearchIntentService.ID_EXTRA_JSON_TEXT);
 
                 try {
                     JSONArray jsonArray = new JSONArray(jsonData);
-                    ArrayList<DownloadInfo> downloadInfoArrayList = new ArrayList<DownloadInfo>();
+
 
                     downloadInfoArrayList.clear();
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Log.d("Json", jsonObject.toString());
                         DownloadInfo downloadInfo = new DownloadInfo(jsonObject.getString("name"), jsonObject.toString());
                         downloadInfoArrayList.add(downloadInfo);
                     }
@@ -82,7 +89,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void updateListView() {
-        listview.setAdapter(new UsersAdapter(this, downloadInfoArrayList));
+        ArrayAdapter<DownloadInfo> adapter = new UsersAdapter(this, downloadInfoArrayList);
+        listview.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public class UsersAdapter extends ArrayAdapter<DownloadInfo> {
@@ -91,7 +100,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
             DownloadInfo user = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
@@ -102,6 +111,18 @@ public class SearchActivity extends AppCompatActivity {
             TextView tvName = (TextView) convertView.findViewById(R.id.search_item_name);
 
             tvName.setText(user.getName());
+
+            tvName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(SearchActivity.this, AccountDetailActivity.class);
+
+                    DownloadInfo downloadInfo = getItem(position);
+                    intent.putExtra(AccountDetailActivity.ID_EXTRA_DOWNLOADINFO, downloadInfo);
+
+                    startActivity(intent);
+                }
+            });
 
             // Return the completed view to render on screen
             return convertView;

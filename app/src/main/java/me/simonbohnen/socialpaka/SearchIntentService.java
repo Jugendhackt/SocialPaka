@@ -51,6 +51,7 @@ public class SearchIntentService extends IntentService {
     }
 
     protected void onHandleIntent(Intent intent) {
+        Log.d(TAG, "onHandleIntent");
         PendingIntent reply = intent.getParcelableExtra(PENDING_RESULT_EXTRA);
         final String input = intent.getStringExtra(ID_EXTRA_INPUT);
 

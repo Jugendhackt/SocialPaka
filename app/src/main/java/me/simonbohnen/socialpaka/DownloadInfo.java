@@ -26,7 +26,7 @@ public class DownloadInfo implements Serializable{
 
             this.name = jsonObject.getString("fullName");
             this.bday = jsonObject.getString("bday");
-            this.mail = jsonObject.getString("email");
+            this.mail = jsonObject.getString("mail");
             this.phone = jsonObject.getString("phone");
             JSONArray jsonArray = jsonObject.getJSONArray("skills");
             skills = new String[jsonArray.length()];
