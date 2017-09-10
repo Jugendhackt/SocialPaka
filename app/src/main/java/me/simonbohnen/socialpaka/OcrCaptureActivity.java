@@ -27,7 +27,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -73,7 +72,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
-    private static final String token =  "xoxp-2477244817-237708742192-238717972115-3a557f9046d2f08c52f08591b858d78f";
+    private static final String token =  "xoxp-2477244817-237708742192-239892136503-4d950fd9586b1ec4e3ea6bab984111b1";
 
     // Constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
