@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +40,7 @@ public class AccountDetailActivity extends AppCompatActivity {
     private TextView textView_bday;
     private TextView textView_skills;
     private Button slackbutton;
+    private Button contactButton;
     private ActionBar actionBar;
 
     private DownloadInfo downloadInfo;
@@ -74,6 +76,22 @@ public class AccountDetailActivity extends AppCompatActivity {
                 String uri = "slack://user?team=T02E176Q1&id=" + OcrCaptureActivity.emailToUserid.get(downloadInfo.getMail());
                 final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 startActivity(browserIntent);
+            }
+        });
+
+        contactButton = (Button) findViewById(R.id.button_add_contact);
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent contactIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
+                contactIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+
+                contactIntent
+                        .putExtra(ContactsContract.Intents.Insert.NAME, downloadInfo.getName())
+                        .putExtra(ContactsContract.Intents.Insert.PHONE, downloadInfo.getPhone())
+                        .putExtra(ContactsContract.Intents.Insert.EMAIL, downloadInfo.getMail());
+
+                startActivityForResult(contactIntent, 1);
             }
         });
     }
