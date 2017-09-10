@@ -121,7 +121,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         emailToUserid = new HashMap<>();
         // Instantiate the RequestQueue.
         final RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://slack.com/api/users.list?token=xoxp-2477244817-237708742192-239610666038-c6551ce4a404607d4a49d8e9c886dafe";
+        String url ="https://slack.com/api/users.list?token=xoxp-2477244817-237708742192-238136678432-044c8c373653f6ea70ec3a1071af0bae";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -156,7 +156,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
-        String url2 ="https://slack.com/api/channels.info?token=xoxp-2477244817-237708742192-239610666038-c6551ce4a404607d4a49d8e9c886dafe&channel=C0565C5GT";
+        String url2 ="https://slack.com/api/channels.info?token=xoxp-2477244817-237708742192-238136678432-044c8c373653f6ea70ec3a1071af0bae";
         // Request a string response from the provided URL.
         StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>() {
             @Override
