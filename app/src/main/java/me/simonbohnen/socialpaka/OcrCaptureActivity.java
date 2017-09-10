@@ -93,6 +93,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     // A TextToSpeech engine for speaking a String value.
     private TextToSpeech tts;
+    public static String jhUserIDs;
 
     /**
      * Initializes the UI and creates the detector pipeline.
@@ -143,25 +144,16 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         JSONArray jsa = jObject.optJSONArray("members");
-                            Log.d("Test", Integer.toString(jsa.length()));
-                            int count = 0;
-                            for (int i=0; i < jsa.length(); i++) {
-                                JSONObject user = jsa.optJSONObject(i);
-                                JSONObject profile = user.optJSONObject("profile");
-                                if (profile != null) {
-                                    String email = profile.optString("email");
-                                    if(email == null) {
-                                        Log.d("No email", Integer.toString(i));
-                                    } else {
-                                        emailToUserid.put(email, user.optString("id"));
-                                    }
-                                } else {
-                                    Log.d("profileNull", Integer.toString(i));
+                        for (int i=0; i < jsa.length(); i++) {
+                            JSONObject user = jsa.optJSONObject(i);
+                            JSONObject profile = user.optJSONObject("profile");
+                            if (profile != null) {
+                                String email = profile.optString("email");
+                                if (email != null) {
+                                    emailToUserid.put(email, user.optString("id"));
                                 }
-                                count++;
-                                Log.d("test", Integer.toString(count));
-                                Log.d("Test", Integer.toString(i));
                             }
+                        }
                     }
                 }).start();
             }
@@ -173,6 +165,34 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+
+        String url2 ="https://slack.com/api/channels.info?token=xoxp-2477244817-237708742192-239610666038-c6551ce4a404607d4a49d8e9c886dafe&channel=C0565C5GT";
+        // Request a string response from the provided URL.
+        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject jObject = null;
+                        try {
+                            jObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JSONArray jsa = jObject.optJSONObject("channel").optJSONArray("members");
+                        jhUserIDs = jsa.toString();
+                    }
+                }).start();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Error", "That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest2);
     }
 
     @Override
