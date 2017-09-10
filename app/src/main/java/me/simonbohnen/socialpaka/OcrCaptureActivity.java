@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -84,6 +85,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
+    private ImageButton imageButton;
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
@@ -101,6 +103,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
 
         // Set good defaults for capturing text.
         final boolean autoFocus = true;
@@ -186,6 +189,14 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         queue.add(stringRequest2);
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OcrCaptureActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void surNameToUserID() {
