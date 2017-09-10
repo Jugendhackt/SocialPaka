@@ -72,7 +72,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
-    private static final String token =  "xoxp-2477244817-237708742192-239892136503-4d950fd9586b1ec4e3ea6bab984111b1";
+    private static final String token =  "xoxp-2477244817-237708742192-238953477829-4689d1fcc4ded3550a00ce9e6d9a0dcd";
 
     // Constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
