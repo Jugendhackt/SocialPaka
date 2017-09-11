@@ -14,7 +14,7 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
         android:label="SocialPaka"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
 
         <!--
@@ -26,15 +26,18 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />
 
-        <activity
-            android:name="me.simonbohnen.socialpaka.OcrCaptureActivity"
-            android:label="SocialPaka">
+        <activity android:name="me.simonbohnen.socialpaka.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="me.simonbohnen.socialpaka.OcrCaptureActivity"
+            android:label="SocialPaka">
+        </activity>
+
         <activity
             android:name="me.simonbohnen.socialpaka.AccountDetailActivity"
             android:label="@string/title_activity_account_detail_activiy"
@@ -44,11 +47,6 @@
                 android:value="me.simonbohnen.socialpaka.OcrCaptureActivity" />
         </activity>
 
-        <service
-            android:name="me.simonbohnen.socialpaka.DownloadIntentService"
-            android:exported="false" />
-
-        <activity android:name="me.simonbohnen.socialpaka.ErrorActivity"></activity>
     </application>
 
 </manifest>

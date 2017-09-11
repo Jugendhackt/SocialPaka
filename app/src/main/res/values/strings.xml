@@ -15,4 +15,10 @@
     <string name="title_activity_account_detail_activiy">AccountDetailActiviy</string>
     <string name="download">Lade Informationen...</string>
     <string name="skills_template">Ich kann: %s</string>
+    <string name="socialpaka">SocialPaka</string>
+    <string name="scan">Namensschild scannen</string>
+    <string name="searchName">Nach Namen suchen</string>
+    <string name="searchSkill">Skill suchen</string>
+    <string name="enterPassword">Passwort eingeben</string>
+    <string name="passwort">Passwort</string>
 </resources>

@@ -62,7 +62,10 @@ class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            DownloadIntentService.startService(context, OcrCaptureActivity.DOWNLOAD_REQUEST_CODE, wort);
+                            if (OcrCaptureActivity.nameToUserID.containsKey(wort)) {
+                                AccountDetailActivity.vorname = wort;
+                                context.startActivity(new Intent(context, AccountDetailActivity.class));
+                            }
                         }
                     }).start();
                 } else {

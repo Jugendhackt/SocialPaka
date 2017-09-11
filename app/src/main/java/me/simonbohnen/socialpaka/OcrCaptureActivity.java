@@ -72,7 +72,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
-    private static final String token =  "xoxp-2477244817-237708742192-238953477829-4689d1fcc4ded3550a00ce9e6d9a0dcd";
+    private static final String token =  "PRIVATE_TOKEN";
 
     // Constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
@@ -182,9 +182,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 Log.d("Error", "That didn't work!");
             }
         });
-        // Add the request to the RequestQueue.
         queue.add(stringRequest2);
-        // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
 
@@ -200,22 +198,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                         nameToUserID.put(name, id);
                     }
                 }
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == DOWNLOAD_REQUEST_CODE) {
-            if (resultCode == DownloadIntentService.SUCCESS_CODE) {
-                Intent intent = new Intent(this, AccountDetailActivity.class);
-
-                DownloadInfo downloadInfo = (DownloadInfo) data.getSerializableExtra(DownloadIntentService.ID_EXTRA_DOWNLOADINFO);
-                intent.putExtra(AccountDetailActivity.ID_EXTRA_DOWNLOADINFO, downloadInfo);
-
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, "Fehlgeschlagen", Toast.LENGTH_SHORT).show();
             }
         }
     }
