@@ -36,23 +36,12 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import me.simonbohnen.socialpaka.ui.camera.*;
 
 import com.google.android.gms.samples.vision.ocrreader.R;
 import com.google.android.gms.vision.text.TextRecognizer;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -64,7 +53,6 @@ import java.util.HashMap;
  */
 public final class OcrCaptureActivity extends AppCompatActivity {
     private static final String TAG = "OcrCaptureActivity";
-    public static final int DOWNLOAD_REQUEST_CODE = 5;
 
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -72,14 +60,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
-    private static final String token =  "PRIVATE_TOKEN";
-
     // Constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
-
-    public static HashMap<String, String> emailToUserid;
-    public static HashMap<String, String> nameToUserID;
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -87,9 +70,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
-
-    public static String jhUserIDs;
-    private static JSONObject userlist;
 
     /**
      * Initializes the UI and creates the detector pipeline.
@@ -120,86 +100,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         Snackbar.make(mGraphicOverlay, "Pinch/Stretch to zoom. Hover over name to scan.",
                 Snackbar.LENGTH_LONG)
                 .show();
-
-        emailToUserid = new HashMap<>();
-        nameToUserID = new HashMap<>();
-        // Instantiate the RequestQueue.
-        final RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://slack.com/api/users.list?token=" + token;
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(final String response) {
-                JSONObject jObject = null;
-                try {
-                    jObject = new JSONObject(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if(jObject != null) {
-                    userlist = jObject;
-                    JSONArray jsa = jObject.optJSONArray("members");
-                    for (int i = 0; i < jsa.length(); i++) {
-                        JSONObject user = jsa.optJSONObject(i);
-                        JSONObject profile = user.optJSONObject("profile");
-                        if (profile != null) {
-                            String email = profile.optString("email");
-                            if (email != null) {
-                                emailToUserid.put(email, user.optString("id"));
-                            }
-                        }
-                    }
-                    surNameToUserID();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Error", "That didn't work!");
-            }
-        });
-
-        String url2 ="https://slack.com/api/channels.info?token=" + token + "&channel=C0565C5GT";
-        // Request a string response from the provided URL.
-        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, new Response.Listener<String>() {
-            @Override
-            public void onResponse(final String response) {
-                JSONObject jObject = null;
-                try {
-                    jObject = new JSONObject(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if(jObject != null) {
-                    JSONArray jsa = jObject.optJSONObject("channel").optJSONArray("members");
-                    jhUserIDs = jsa.toString();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Error", "That didn't work!");
-            }
-        });
-        queue.add(stringRequest2);
-        queue.add(stringRequest);
-    }
-
-    private void surNameToUserID() {
-        if(userlist != null) {
-            JSONArray jsa = userlist.optJSONArray("members");
-            for (int i = 0; i < jsa.length(); i++) {
-                JSONObject user = jsa.optJSONObject(i);
-                String id = user.optString("id");
-                if(jhUserIDs.contains(id)) {
-                    String name = user.optString("real_name").split(" ")[0];
-                    if (name != null) {
-                        nameToUserID.put(name, id);
-                    }
-                }
-            }
-        }
     }
 
     /**

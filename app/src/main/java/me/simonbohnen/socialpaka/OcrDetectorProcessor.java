@@ -62,8 +62,18 @@ class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            if (OcrCaptureActivity.nameToUserID.containsKey(wort)) {
-                                AccountDetailActivity.vorname = wort;
+                            String key = null;
+                            for(String s : MainActivity.names) {
+                                if(s.contains(wort)) {
+                                    //todo muss mehrere Treffer verarbeiten können
+                                    key = s;
+                                    break;
+                                }
+                            }
+                            if(key != null) {
+                                String userid = MainActivity.nameToUserID.get(key);
+                                AccountDetailActivity.userID = userid;
+                                AccountDetailActivity.user = MainActivity.userInfo.get(userid);
                                 context.startActivity(new Intent(context, AccountDetailActivity.class));
                             }
                         }

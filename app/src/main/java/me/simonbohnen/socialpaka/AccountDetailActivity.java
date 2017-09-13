@@ -14,12 +14,15 @@ import android.widget.Button;
 
 import com.google.android.gms.samples.vision.ocrreader.R;
 
+import org.json.JSONObject;
+
 public class AccountDetailActivity extends AppCompatActivity {
     public static final String ID_EXTRA_DOWNLOADINFO = "ID_EXTRA_DOWNLOADINFO";
     public static final String USER_NAME_ID = "USER_NAME_ID";
     public static final String JSON_DATA_ID = "JSON_DATA_ID";
 
-    public static String vorname = "";
+    public static JSONObject user;
+    public static String userID;
 
     private Toolbar toolbar;
     private String name;
@@ -32,14 +35,10 @@ public class AccountDetailActivity extends AppCompatActivity {
     private Button contactButton;
     private ActionBar actionBar;
 
-    private DownloadInfo downloadInfo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_detail_activity);
-
-        downloadInfo = (DownloadInfo) getIntent().getSerializableExtra(ID_EXTRA_DOWNLOADINFO);
 
         toolbar = (Toolbar) findViewById(R.id.account_detail_toolbar);
         setSupportActionBar(toolbar);
@@ -56,19 +55,11 @@ public class AccountDetailActivity extends AppCompatActivity {
 
         showInformation();
 
-        Log.d("Test", Integer.toString(OcrCaptureActivity.emailToUserid.size()));
-
         slackbutton = (Button) findViewById(R.id.slackbutton);
         slackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uri = "slack://user?team=T02E176Q1&id=";
-                String mail = downloadInfo.getMail();
-                if(mail != null) {
-                    uri += OcrCaptureActivity.emailToUserid.get(downloadInfo.getMail());
-                } else if (OcrCaptureActivity.nameToUserID.containsKey(vorname)) {
-                    uri += OcrCaptureActivity.nameToUserID.get(vorname);
-                }
+                String uri = "slack://user?team=T02E176Q1&id=" + userID;
                 final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 startActivity(browserIntent);
             }
@@ -81,10 +72,11 @@ public class AccountDetailActivity extends AppCompatActivity {
                 Intent contactIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
                 contactIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
 
+                /*
                 contactIntent
                         .putExtra(ContactsContract.Intents.Insert.NAME, downloadInfo.getName())
                         .putExtra(ContactsContract.Intents.Insert.PHONE, downloadInfo.getPhone())
-                        .putExtra(ContactsContract.Intents.Insert.EMAIL, downloadInfo.getMail());
+                        .putExtra(ContactsContract.Intents.Insert.EMAIL, downloadInfo.getMail()); */
 
                 startActivityForResult(contactIntent, 1);
             }
@@ -93,6 +85,7 @@ public class AccountDetailActivity extends AppCompatActivity {
 
 
     protected void showInformation() {
+        /*
         name = downloadInfo.getInputName();
         actionBar.setTitle(downloadInfo.getInputName());
         textView_name.setText(downloadInfo.getName());
@@ -102,6 +95,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         if(downloadInfo.skills != null) {
             textView_skills.setText(String.format(getString(R.string.skills_template), downloadInfo.getSkills()));
         }
+        */
     }
 
     @Override
