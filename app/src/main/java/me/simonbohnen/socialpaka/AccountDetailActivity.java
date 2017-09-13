@@ -7,7 +7,6 @@ import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.Button;
@@ -17,45 +16,35 @@ import com.google.android.gms.samples.vision.ocrreader.R;
 import org.json.JSONObject;
 
 public class AccountDetailActivity extends AppCompatActivity {
-    public static final String ID_EXTRA_DOWNLOADINFO = "ID_EXTRA_DOWNLOADINFO";
-    public static final String USER_NAME_ID = "USER_NAME_ID";
-    public static final String JSON_DATA_ID = "JSON_DATA_ID";
-
     public static JSONObject user;
     public static String userID;
 
-    private Toolbar toolbar;
-    private String name;
-    private TextView textView_name;
+    private TextView textView_realname;
+    private TextView textView_username;
     private TextView textView_mail;
-    private TextView textView_tel;
-    private TextView textView_bday;
     private TextView textView_skills;
-    private Button slackbutton;
-    private Button contactButton;
-    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_detail_activity);
 
-        toolbar = (Toolbar) findViewById(R.id.account_detail_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.account_detail_toolbar);
         setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
+            actionBar.setTitle(R.string.nutzerdetails);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        textView_name = (TextView) findViewById(R.id.textView_name);
+        textView_realname = (TextView) findViewById(R.id.textView_name);
+        textView_username = (TextView) findViewById(R.id.textView_username);
         textView_mail = (TextView) findViewById(R.id.textView_e_mail);
-        textView_tel = (TextView) findViewById(R.id.textView_phone);
-        textView_bday = (TextView) findViewById(R.id.textView_birthday);
         textView_skills = (TextView) findViewById(R.id.textView_skills);
 
         showInformation();
 
-        slackbutton = (Button) findViewById(R.id.slackbutton);
+        Button slackbutton = (Button) findViewById(R.id.slackbutton);
         slackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +54,7 @@ public class AccountDetailActivity extends AppCompatActivity {
             }
         });
 
-        contactButton = (Button) findViewById(R.id.button_add_contact);
+        Button contactButton = (Button) findViewById(R.id.button_add_contact);
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,25 +73,25 @@ public class AccountDetailActivity extends AppCompatActivity {
     }
 
 
-    protected void showInformation() {
-        /*
-        name = downloadInfo.getInputName();
-        actionBar.setTitle(downloadInfo.getInputName());
-        textView_name.setText(downloadInfo.getName());
-        textView_bday.setText(downloadInfo.getBday());
-        textView_tel.setText(downloadInfo.getPhone());
-        textView_mail.setText(downloadInfo.getMail());
-        if(downloadInfo.skills != null) {
-            textView_skills.setText(String.format(getString(R.string.skills_template), downloadInfo.getSkills()));
+    private void showInformation() {
+        textView_realname.setText(user.optString("real_name"));
+        textView_username.setText(user.optString("name"));
+        JSONObject profileInfo = user.optJSONObject("profile");
+        if(profileInfo != null) {
+            textView_mail.setText(profileInfo.optString("email"));
+            String skills = profileInfo.optString("title");
+            if (skills != null && !skills.isEmpty()) {
+                textView_skills.setVisibility(View.VISIBLE);
+                textView_skills.setText(skills);
+            }
         }
-        */
     }
-
+    /*
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, OcrCaptureActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-    }
+    }*/
 }

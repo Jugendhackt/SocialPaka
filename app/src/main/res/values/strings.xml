@@ -13,7 +13,6 @@
     <string name="ocr_failure">No text captured</string>
     <string name="ocr_error">"Error reading text: %1$s"</string>
     <string name="title_activity_account_detail_activiy">AccountDetailActiviy</string>
-    <string name="download">Lade Informationen...</string>
     <string name="skills_template">Ich kann: %s</string>
     <string name="socialpaka">SocialPaka</string>
     <string name="scan">Namensschild scannen</string>
@@ -21,5 +20,8 @@
     <string name="searchSkill">Skill suchen</string>
     <string name="enterPassword">Passwort eingeben</string>
     <string name="passwort">Passwort</string>
-    <string name="slackLoading">Slack-Daten werden geladen...</string>
+    <string name="slackLoading">Slack-Daten werden geladen…</string>
+    <string name="nutzerdetails">Nutzerdetails</string>
+    <string name="addcontact">Zu Kontakten hinzufügen</string>
+    <string name="openslack">In Slack anzeigen</string>
 </resources>

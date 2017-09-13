@@ -16,7 +16,6 @@
 package me.simonbohnen.socialpaka;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
@@ -32,8 +31,8 @@ import com.google.android.gms.vision.text.TextBlock;
  */
 class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
-    private GraphicOverlay<OcrGraphic> mGraphicOverlay;
-    private Activity context;
+    private final GraphicOverlay<OcrGraphic> mGraphicOverlay;
+    private final Activity context;
 
     OcrDetectorProcessor(GraphicOverlay<OcrGraphic> ocrGraphicOverlay,
                          Activity context) {

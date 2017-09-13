@@ -34,7 +34,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 public class MainActivity extends AppCompatActivity implements PasswordDialogFragment.DialogListener {
-    private static String inited = "inited";
+    private static final String inited = "inited";
     private MessageDigest md;
     private String enteredPasswort;
     private SharedPreferences sp;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements PasswordDialogFra
     //A set of all the names of all the users in the jugendHackt channel
     public static Set<String> names;
     //A String of all the user ids in the jugendhackt channel
-    public static String jhUserIDs;
+    private static String jhUserIDs;
     //allUsers of the open knowledge germany team
     private JSONArray allUsers;
 

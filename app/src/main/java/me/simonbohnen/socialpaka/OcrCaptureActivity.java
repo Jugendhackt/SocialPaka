@@ -44,7 +44,6 @@ import com.google.android.gms.samples.vision.ocrreader.R;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Activity for the Ocr Detecting app.  This app detects text and displays the value with the
@@ -61,8 +60,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
     // Constants used to pass extra data in the intent
-    public static final String AutoFocus = "AutoFocus";
-    public static final String UseFlash = "UseFlash";
+    private static final String AutoFocus = "AutoFocus";
+    private static final String UseFlash = "UseFlash";
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
