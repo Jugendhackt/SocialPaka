@@ -36,7 +36,6 @@ import javax.crypto.spec.SecretKeySpec;
 public class MainActivity extends AppCompatActivity implements PasswordDialogFragment.DialogListener {
     private static final String inited = "inited";
     private MessageDigest md;
-    private String enteredPasswort;
     private SharedPreferences sp;
     private int finishedCount = 0;
 
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements PasswordDialogFra
         byte[] digest = md.digest();
         byte[] passwordHashed = {-54, 83, -125, 34, 94, 24, 80, 86, 12, -7, 28, 82, -126, -47, -105, -57, 78, 114, -112, 34, -16, -116, 80, -15, 8, -64, -55, 12, -86, -47, -22, 54};
         if(Arrays.equals(digest, passwordHashed)) {
-            enteredPasswort = passwort;
             SharedPreferences.Editor ed = sp.edit();
             ed.putBoolean(inited, true);
             ed.putString("passwort", passwort);

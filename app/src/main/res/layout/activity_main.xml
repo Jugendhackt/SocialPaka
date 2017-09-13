@@ -20,13 +20,11 @@
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/slackProgress"
             android:layout_marginBottom="8dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/loadingtext"
             android:text="@string/slackLoading"/>
 
     </LinearLayout>
@@ -46,7 +44,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/title"
             android:text="@string/socialpaka"
             android:textSize="40sp"
             android:layout_marginBottom="40dp"
@@ -60,13 +57,11 @@
             android:text="@string/scan"/>
 
         <Button
-            android:id="@+id/searchName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/searchName"/>
 
         <Button
-            android:id="@+id/searchSkill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/searchSkill"/>
