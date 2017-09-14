@@ -29,6 +29,9 @@ import com.google.android.gms.vision.text.TextBlock;
  * A very simple Processor which gets detected TextBlocks and adds them to the overlay
  * as OcrGraphics.
  */
+
+//todo detect if multiple with the same forename
+
 class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
     private final GraphicOverlay<OcrGraphic> mGraphicOverlay;
