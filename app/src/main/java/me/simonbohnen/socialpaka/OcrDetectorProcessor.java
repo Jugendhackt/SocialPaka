@@ -20,8 +20,6 @@ import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
 
-import me.simonbohnen.socialpaka.ui.camera.GraphicOverlay;
-
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.text.TextBlock;
 
@@ -33,14 +31,15 @@ import com.google.android.gms.vision.text.TextBlock;
 //todo detect if multiple with the same forename
 
 class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
-
-    private final GraphicOverlay<OcrGraphic> mGraphicOverlay;
     private final Activity context;
 
-    OcrDetectorProcessor(GraphicOverlay<OcrGraphic> ocrGraphicOverlay,
-                         Activity context) {
-        mGraphicOverlay = ocrGraphicOverlay;
+    OcrDetectorProcessor(Activity context) {
         this.context = context;
+    }
+
+    @Override
+    public void release() {
+
     }
 
     /**
@@ -52,7 +51,6 @@ class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
      */
     @Override
     public void receiveDetections(Detector.Detections<TextBlock> detections) {
-        mGraphicOverlay.clear();
         SparseArray<TextBlock> items = detections.getDetectedItems();
         for (int i = 0; i < items.size(); ++i) {
             TextBlock item = items.valueAt(i);
@@ -85,13 +83,5 @@ class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                 }
             }
         }
-    }
-
-    /**
-     * Frees the resources associated with this detection processor.
-     */
-    @Override
-    public void release() {
-        mGraphicOverlay.clear();
     }
 }

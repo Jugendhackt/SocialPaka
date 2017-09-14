@@ -326,12 +326,13 @@ public class CameraSource {
         }
     }
 
+    /*
     /**
      * Opens the camera and starts sending preview frames to the underlying detector.  The preview
      * frames are not displayed.
      *
      * @throws IOException if the camera's preview texture or display could not be initialized
-     */
+
     @RequiresPermission(Manifest.permission.CAMERA)
     public CameraSource start() throws IOException {
         synchronized (mCameraLock) {
@@ -353,6 +354,7 @@ public class CameraSource {
         }
         return this;
     }
+    */
 
     /**
      * Opens the camera and starts sending preview frames to the underlying detector.  The supplied
@@ -382,7 +384,7 @@ public class CameraSource {
     /**
      * Closes the camera and stops sending frames to the underlying frame detector.
      * <p/>
-     * This camera source may be restarted again by calling {@link #start()} or
+     * This camera source may be restarted again by calling start() or
      * {@link #start(SurfaceHolder)}.
      * <p/>
      * Call {@link #release()} instead to completely shut down this camera source and release the
@@ -475,6 +477,7 @@ public class CameraSource {
         }
     }
 
+
     /**
      * Initiates taking a picture, which happens asynchronously.  The camera source should have been
      * activated previously with {@link #start()} or {@link #start(SurfaceHolder)}.  The camera
@@ -483,7 +486,7 @@ public class CameraSource {
      *
      * @param shutter the callback for image capture moment, or null
      * @param jpeg    the callback for JPEG image data, or null
-     */
+
     public void takePicture(ShutterCallback shutter, PictureCallback jpeg) {
         synchronized (mCameraLock) {
             if (mCamera != null) {
@@ -509,7 +512,7 @@ public class CameraSource {
      * @see Camera.Parameters#FOCUS_MODE_EDOF
      * @see Camera.Parameters#FOCUS_MODE_CONTINUOUS_VIDEO
      * @see Camera.Parameters#FOCUS_MODE_CONTINUOUS_PICTURE
-     */
+
     @Nullable
     @FocusMode
     public String getFocusMode() {
@@ -522,7 +525,7 @@ public class CameraSource {
      * @param mode the focus mode
      * @return {@code true} if the focus mode is set, {@code false} otherwise
      * @see #getFocusMode()
-     */
+
     public boolean setFocusMode(@FocusMode String mode) {
         synchronized (mCameraLock) {
             if (mCamera != null && mode != null) {
@@ -537,7 +540,7 @@ public class CameraSource {
 
             return false;
         }
-    }
+    }*/
 
     /**
      * Gets the current flash mode setting.
@@ -549,7 +552,7 @@ public class CameraSource {
      * @see Camera.Parameters#FLASH_MODE_ON
      * @see Camera.Parameters#FLASH_MODE_RED_EYE
      * @see Camera.Parameters#FLASH_MODE_TORCH
-     */
+
     @Nullable
     @FlashMode
     public String getFlashMode() {
@@ -562,7 +565,7 @@ public class CameraSource {
      * @param mode flash mode.
      * @return {@code true} if the flash mode is set, {@code false} otherwise
      * @see #getFlashMode()
-     */
+
     public boolean setFlashMode(@FlashMode String mode) {
         synchronized (mCameraLock) {
             if (mCamera != null && mode != null) {
@@ -597,7 +600,7 @@ public class CameraSource {
      *
      * @param cb the callback to run
      * @see #cancelAutoFocus()
-     */
+
     public void autoFocus(@Nullable AutoFocusCallback cb) {
         synchronized (mCameraLock) {
             if (mCamera != null) {
@@ -618,7 +621,7 @@ public class CameraSource {
      * If the camera does not support auto-focus, this is a no-op.
      *
      * @see #autoFocus(AutoFocusCallback)
-     */
+
     public void cancelAutoFocus() {
         synchronized (mCameraLock) {
             if (mCamera != null) {
@@ -633,7 +636,7 @@ public class CameraSource {
      * @param cb the callback to run
      * @return {@code true} if the operation is supported (i.e. from Jelly Bean), {@code false}
      * otherwise
-     */
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public boolean setAutoFocusMoveCallback(@Nullable AutoFocusMoveCallback cb) {
 
@@ -649,7 +652,7 @@ public class CameraSource {
         }
 
         return true;
-    }
+    }*/
 
     //==============================================================================================
     // Private
@@ -657,13 +660,13 @@ public class CameraSource {
 
     /**
      * Only allow creation via the builder class.
-     */
+
     private CameraSource() {
     }
 
     /**
      * Wraps the camera1 shutter callback so that the deprecated API isn't exposed.
-     */
+
     private class PictureStartCallback implements Camera.ShutterCallback {
         private ShutterCallback mDelegate;
 
@@ -678,7 +681,7 @@ public class CameraSource {
     /**
      * Wraps the final callback in the camera sequence, so that we can automatically turn the camera
      * preview back on after the picture has been taken.
-     */
+
     private class PictureDoneCallback implements Camera.PictureCallback {
         private PictureCallback mDelegate;
 
@@ -697,7 +700,7 @@ public class CameraSource {
 
     /**
      * Wraps the camera1 auto focus callback so that the deprecated API isn't exposed.
-     */
+
     private class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
         private AutoFocusCallback mDelegate;
 
@@ -711,7 +714,7 @@ public class CameraSource {
 
     /**
      * Wraps the camera1 auto focus move callback so that the deprecated API isn't exposed.
-     */
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
         private AutoFocusMoveCallback mDelegate;

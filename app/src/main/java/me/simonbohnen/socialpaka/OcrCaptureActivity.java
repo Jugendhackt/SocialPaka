@@ -65,7 +65,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
-    private GraphicOverlay<OcrGraphic> mGraphicOverlay;
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
@@ -79,7 +78,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         setContentView(R.layout.ocr_capture);
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
-        mGraphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
 
         // Set good defaults for capturing text.
         final boolean autoFocus = true;
@@ -96,9 +94,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        Snackbar.make(mGraphicOverlay, "Pinch/Stretch to zoom. Hover over name to scan.",
-                Snackbar.LENGTH_LONG)
-                .show();
+        Toast.makeText(this, "Pinch/Stretch to zoom. Hover over name to scan.", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -126,11 +122,11 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                         RC_HANDLE_CAMERA_PERM);
             }
         };
-
-        Snackbar.make(mGraphicOverlay, R.string.permission_camera_rationale,
+        //todo what to do if no camera access?
+        /*Snackbar.make(mGraphicOverlay, R.string.permission_camera_rationale,
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.ok, listener)
-                .show();
+                .show();*/
     }
 
     @Override
@@ -156,7 +152,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         // graphics for each text block on screen.  The factory is used by the multi-processor to
         // create a separate tracker instance for each text block.
         TextRecognizer textRecognizer = new TextRecognizer.Builder(context).build();
-        textRecognizer.setProcessor(new OcrDetectorProcessor(mGraphicOverlay, this));
+        textRecognizer.setProcessor(new OcrDetectorProcessor(this));
 
         if (!textRecognizer.isOperational()) {
             // Note: The first time that an app using a Vision API is installed on a
@@ -293,7 +289,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         if (mCameraSource != null) {
             try {
-                mPreview.start(mCameraSource, mGraphicOverlay);
+                mPreview.start(mCameraSource);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to start camera source.", e);
                 mCameraSource.release();
