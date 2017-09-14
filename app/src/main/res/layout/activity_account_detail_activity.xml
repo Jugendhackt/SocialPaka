@@ -90,7 +90,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.502" />
-
+<!--
     <Button
         android:id="@+id/button_add_contact"
         android:text="@string/addcontact"
@@ -101,6 +101,6 @@
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slackbutton" />
+        app:layout_constraintTop_toBottomOf="@+id/slackbutton" />-->
 
 </android.support.constraint.ConstraintLayout>

@@ -75,7 +75,22 @@ public class MainActivity extends AppCompatActivity implements PasswordDialogFra
         scanName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                OcrCaptureActivity.cameFromMain = true;
                 startActivity(new Intent(MainActivity.this, OcrCaptureActivity.class));
+            }
+        });
+        Button searchName = (Button) findViewById(R.id.searchName);
+        searchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo search for names
+            }
+        });
+        Button searchSkill = (Button) findViewById(R.id.searchSkill);
+        searchSkill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo search for skill
             }
         });
     }
@@ -182,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements PasswordDialogFra
                     userInfo.put(user.optString("id"), user);
                 }
             }
-
             for(Map.Entry user : userInfo.entrySet()) {
                 nameToUserID.put(((JSONObject) user.getValue()).optString("real_name"), (String) user.getKey());
             }

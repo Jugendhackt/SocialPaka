@@ -28,7 +28,6 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -69,6 +68,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
 
+    static boolean cameFromMain;
+
     /**
      * Initializes the UI and creates the detector pipeline.
      */
@@ -94,7 +95,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        Toast.makeText(this, "Pinch/Stretch to zoom. Hover over name to scan.", Toast.LENGTH_LONG).show();
+        if(cameFromMain) {
+            cameFromMain = false;
+            Toast.makeText(this, "Pinch/Stretch to zoom. Hover over name to scan.", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
