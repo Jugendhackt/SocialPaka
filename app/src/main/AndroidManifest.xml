@@ -42,7 +42,6 @@
 
         <activity
             android:name="me.simonbohnen.socialpaka.AccountDetailActivity"
-            android:label="@string/title_activity_account_detail_activiy"
             android:parentActivityName="me.simonbohnen.socialpaka.OcrCaptureActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -4,7 +4,6 @@
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
     <string name="low_storage_error">Ocr dependencies cannot be downloaded due to low device storage</string>
-    <string name="title_activity_account_detail_activiy">AccountDetailActiviy</string>
     <string name="socialpaka">SocialPaka</string>
     <string name="scan">Namensschild scannen</string>
     <string name="searchName">Nach Namen suchen</string>
@@ -15,4 +14,5 @@
     <string name="nutzerdetails">Nutzerdetails</string>
     <string name="addcontact">Zu Kontakten hinzufügen</string>
     <string name="openslack">In Slack anzeigen</string>
+    <string name="chooseuser">Nutzer auswählen</string>
 </resources>
